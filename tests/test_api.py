@@ -10,29 +10,20 @@ def test_home():
     response = client.get("/")
 
     assert response.status_code == 200
+
     assert response.json() == {
-        "message": "API do TCC funcionando"
+        "message": "Arquitetura operacional para deploy e gerenciamento de modelos preditivos funcionando"
     }
 
 
-def test_predict():
+def test_list_models():
 
-    dados = {
-        "idade": 30,
-        "renda_anual": 50000,
-        "tempo_emprego": 5,
-        "categoria_risco": "B",
-        "valor_solicitado": 10000,
-        "taxa_juros": 12.5,
-        "percentual_renda": 0.2,
-        "historico_negativo": 0,
-        "tempo_credito": 3
-    }
-
-    response = client.post("/predict", json=dados)
+    response = client.get("/models")
 
     assert response.status_code == 200
 
-    resultado = response.json()
+    data = response.json()
 
-    assert "previsao" in resultado
+    assert "models" in data
+
+    assert data["total_models"] >= 1
