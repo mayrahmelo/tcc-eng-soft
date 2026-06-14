@@ -9,3 +9,4 @@ requests
 sqlalchemy
 pytest
 xgboost
+httpx
