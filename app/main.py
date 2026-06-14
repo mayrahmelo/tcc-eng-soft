@@ -9,13 +9,20 @@ from app.models.prediction_model import Base
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+app = FastAPI(
+    title="Arquitetura Operacional para Modelos Preditivos",
+    description="""
+    API responsável pelo deploy, monitoramento e gerenciamento
+    de múltiplos modelos preditivos em arquitetura desacoplada.
+    """,
+    version="1.0.0"
+)
 
 
 @app.get("/")
 def home():
     return {
-        "message": "Arquitetura de Model Serving funcionando"
+        "message": "Arquitetura operacional para deploy e gerenciamento de modelos preditivos funcionando"
     }
 
 
