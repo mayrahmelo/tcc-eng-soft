@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import pandas as pd
 
-API_URL = "http://127.0.0.1:8000/models"
+API_URL = "https://tcc-eng-soft.onrender.com/models"
 
 st.set_page_config(
     page_title="Dashboard de Gerenciamento de Modelos Preditivos",
@@ -20,6 +20,10 @@ st.markdown(
     Arquitetura operacional para deploy, monitoramento
     e gerenciamento de modelos preditivos via API.
     """
+)
+
+st.caption(
+    "Arquitetura operacional desacoplada com gerenciamento centralizado de modelos preditivos."
 )
 
 # ==========================================
@@ -414,3 +418,11 @@ for modelo in modelos:
             )
 
         st.divider()
+
+# ==========================================
+# FOOTER
+# ==========================================
+
+st.caption(
+    "Projeto acadêmico desenvolvido para demonstração de arquitetura operacional para gerenciamento de modelos preditivos."
+)
