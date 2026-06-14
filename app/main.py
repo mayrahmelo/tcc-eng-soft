@@ -9,18 +9,34 @@ from app.models.prediction_model import Base
 
 Base.metadata.create_all(bind=engine)
 
+openapi_tags = [
+    {
+        "name": "Arquitetura Operacional",
+        "description": """
+        Endpoints responsáveis pelo deploy,
+        monitoramento e gerenciamento
+        dos modelos preditivos da arquitetura.
+        """
+    }
+]
+
 app = FastAPI(
     title="Arquitetura Operacional para Modelos Preditivos",
     description="""
     API responsável pelo deploy, monitoramento e gerenciamento
     de múltiplos modelos preditivos em arquitetura desacoplada.
     """,
-    version="1.0.0"
+    version="1.0.0",
+    openapi_tags=openapi_tags
 )
 
 
-@app.get("/")
+@app.get(
+    "/",
+    tags=["Arquitetura Operacional"]
+)
 def home():
+
     return {
         "message": "Arquitetura operacional para deploy e gerenciamento de modelos preditivos funcionando"
     }

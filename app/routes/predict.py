@@ -5,19 +5,28 @@ from app.services.model_service import realizar_previsao
 from app.registry.model_registry import MODELS
 
 
-router = APIRouter()
+router = APIRouter(
+    tags=["Predições"]
+)
 
 
-@router.post("/predict/{model_name}")
+@router.post(
+    "/predict/{model_name}",
+    summary="Realizar previsão"
+)
 def predict(model_name: str, dados: DadosEntrada):
 
     if model_name not in MODELS:
+
         raise HTTPException(
             status_code=404,
             detail="Modelo não encontrado"
         )
 
-    resultado = realizar_previsao(model_name, dados)
+    resultado = realizar_previsao(
+        model_name,
+        dados
+    )
 
     return {
         "modelo": model_name,
