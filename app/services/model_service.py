@@ -1,64 +1,38 @@
 import joblib
-import pandas as pd
+import numpy as np
 
+from app.registry.model_registry import MODELS
 from app.logger import logger
 
-from app.models.prediction_model import Prediction
-from app.database import SessionLocal
 
-dados_modelo = joblib.load("app/model/modelo_inadimplencia.pkl")
+def realizar_previsao(model_name, dados_entrada):
 
-modelo = dados_modelo["modelo"]
+    model_info = MODELS[model_name]
 
+    modelo_path = model_info["path"]
 
-def realizar_previsao(dados_entrada):
+    modelo = joblib.load(modelo_path)
 
-    categoria_transformada = dados_modelo["ordinal_encoder"].transform(
-        [[dados_entrada.categoria_risco]]
-    )[0][0]
+    features = np.array(dados_entrada.features).reshape(1, -1)
 
-    dados = pd.DataFrame([{
-        "idade": dados_entrada.idade,
-        "renda_anual": dados_entrada.renda_anual,
-        "tempo_emprego": dados_entrada.tempo_emprego,
-        "categoria_risco": categoria_transformada,
-        "valor_solicitado": dados_entrada.valor_solicitado,
-        "taxa_juros": dados_entrada.taxa_juros,
-        "percentual_renda": dados_entrada.percentual_renda,
-        "historico_negativo": dados_entrada.historico_negativo,
-        "tempo_credito": dados_entrada.tempo_credito,
-        "tempo_emprego_missing": 0,
-        "taxa_juros_missing": 0,
-        "tipo_moradia_OTHER": 0,
-        "tipo_moradia_OWN": 1,
-        "tipo_moradia_RENT": 0,
-        "objetivo_emprestimo_EDUCATION": 0,
-        "objetivo_emprestimo_HOMEIMPROVEMENT": 0,
-        "objetivo_emprestimo_MEDICAL": 0,
-        "objetivo_emprestimo_PERSONAL": 1,
-        "objetivo_emprestimo_VENTURE": 0
-    }])
+    # Verifica se o modelo possui scaler
+    if "scaler" in model_info:
 
-    previsao = int(modelo.predict(dados)[0])
-    logger.info(f"Previsão realizada com sucesso: {previsao}")
+        scaler = joblib.load(model_info["scaler"])
 
-    db = SessionLocal()
+        features = scaler.transform(features)
 
-    nova_previsao = Prediction(
-        idade=dados_entrada.idade,
-        renda_anual=dados_entrada.renda_anual,
-        tempo_emprego=dados_entrada.tempo_emprego,
-        categoria_risco=dados_entrada.categoria_risco,
-        valor_solicitado=dados_entrada.valor_solicitado,
-        taxa_juros=dados_entrada.taxa_juros,
-        percentual_renda=dados_entrada.percentual_renda,
-        historico_negativo=dados_entrada.historico_negativo,
-        tempo_credito=dados_entrada.tempo_credito,
-        previsao=previsao
+    previsao = modelo.predict(features)[0]
+
+    # Conversão para tipos compatíveis com JSON
+    if isinstance(previsao, np.integer):
+        previsao = int(previsao)
+
+    elif isinstance(previsao, np.floating):
+        previsao = float(previsao)
+
+    logger.info(
+        f"Previsão realizada com sucesso | Modelo: {model_name} | Resultado: {previsao}"
     )
-
-    db.add(nova_previsao)
-    db.commit()
-    db.close()
 
     return previsao

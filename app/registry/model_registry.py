@@ -1,0 +1,117 @@
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+MODELS = {
+
+    "credito": {
+        "path": BASE_DIR / "models" / "modelo_inadimplencia.pkl",
+        "type": "classification",
+        "algorithm": "RandomForest",
+        "version": "1.0",
+        "status": "active",
+        "deployment_status": "deployed",
+        "environment": "production",
+        "endpoint": "/predict/credito",
+        "pipeline_status": "Passing",
+        "rollback_available": True,
+        "last_deploy": "2026-06-14 10:30",
+        "accuracy": 0.84,
+        "health": "Healthy",
+        "requests_count": 1250,
+        "avg_response_ms": 42,
+        "model_size_mb": 8.4,
+        "last_training": "2026-05-12",
+        "retraining_required": False,
+        "warning": "Monitoramento contínuo recomendado."
+    },
+
+    "churn": {
+        "path": BASE_DIR / "models" / "modelo_churn.pkl",
+        "type": "classification",
+        "algorithm": "RandomForest",
+        "version": "1.0",
+        "status": "active",
+        "deployment_status": "deployed",
+        "environment": "production",
+        "endpoint": "/predict/churn",
+        "pipeline_status": "Passing",
+        "rollback_available": True,
+        "last_deploy": "2026-06-14 10:30",
+        "accuracy": 0.86,
+        "health": "Healthy",
+        "requests_count": 980,
+        "avg_response_ms": 38,
+        "model_size_mb": 9.1,
+        "last_training": "2026-06-10",
+        "retraining_required": False,
+        "warning": "Sem alertas operacionais."
+    },
+
+    "fraude": {
+        "path": BASE_DIR / "models" / "modelo_fraude.pkl",
+        "type": "classification",
+        "algorithm": "XGBoost",
+        "version": "1.0",
+        "status": "active",
+        "deployment_status": "deployed",
+        "environment": "production",
+        "endpoint": "/predict/fraude",
+        "pipeline_status": "Passing",
+        "rollback_available": True,
+        "last_deploy": "2026-06-14 10:30",
+        "accuracy": 0.94,
+        "health": "Monitoring",
+        "requests_count": 2140,
+        "avg_response_ms": 67,
+        "model_size_mb": 14.8,
+        "last_training": "2026-05-28",
+        "retraining_required": True,
+        "warning": "Dataset desbalanceado. Monitoramento recomendado."
+    },
+
+    "loan_approval": {
+        "path": BASE_DIR / "models" / "modelo_loan_approval.pkl",
+        "scaler": BASE_DIR / "models" / "scaler_loan_approval.pkl",
+        "type": "classification",
+        "algorithm": "LogisticRegression",
+        "version": "1.0",
+        "status": "active",
+        "deployment_status": "deployed",
+        "environment": "production",
+        "endpoint": "/predict/loan_approval",
+        "pipeline_status": "Passing",
+        "rollback_available": True,
+        "last_deploy": "2026-06-14 10:30",
+        "accuracy": 0.81,
+        "health": "Healthy",
+        "requests_count": 760,
+        "avg_response_ms": 24,
+        "model_size_mb": 4.2,
+        "last_training": "2026-06-02",
+        "retraining_required": False,
+        "warning": "Sem alertas operacionais."
+    },
+
+    "house_price": {
+        "path": BASE_DIR / "models" / "modelo_house_price.pkl",
+        "type": "regression",
+        "algorithm": "LinearRegression",
+        "version": "1.0",
+        "status": "active",
+        "deployment_status": "deployed",
+        "environment": "production",
+        "endpoint": "/predict/house_price",
+        "pipeline_status": "Passing",
+        "rollback_available": True,
+        "last_deploy": "2026-06-14 10:30",
+        "accuracy": 0.78,
+        "health": "Healthy",
+        "requests_count": 430,
+        "avg_response_ms": 19,
+        "model_size_mb": 2.7,
+        "last_training": "2026-06-01",
+        "retraining_required": False,
+        "warning": "Modelo estável."
+    }
+}
